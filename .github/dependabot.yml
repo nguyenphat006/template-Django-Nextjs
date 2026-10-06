@@ -3,8 +3,8 @@
 #
 # Nguyên tắc:
 # - Lịch hằng tháng (ngày 1, 07:00 giờ VN); mỗi hệ sinh thái gom TẤT CẢ gói vào 1 nhóm -> 1 PR.
-# - Chỉ gom bản minor / patch. Nâng MAJOR (Next, React, Django, ESLint...) cần migration có kế hoạch
-#   -> bị bỏ qua ở đây, nâng thủ công. (Không bỏ qua thì mỗi bản major sẽ thành 1 PR riêng.)
+# - Bản MAJOR (Next, React, Django, ESLint...) bị bỏ qua bằng `ignore` -> nâng thủ công có kế hoạch.
+#   Nhóm cố ý KHÔNG lọc `update-types`: với pip khai báo `>=`, bộ lọc làm gói lọt ra PR riêng.
 # - Image Docker (python, postgres, redis, nginx) và GitHub Actions không tự cập nhật -> nâng thủ công.
 # - Bản vá bảo mật (security updates) KHÔNG theo lịch / nhóm này — bật/tắt trong
 #   GitHub > Settings > Code security > Dependabot security updates.
@@ -27,7 +27,6 @@ updates:
     groups:
       frontend:
         patterns: ["*"]
-        update-types: ["minor", "patch"]
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
@@ -45,7 +44,6 @@ updates:
     groups:
       backend:
         patterns: ["*"]
-        update-types: ["minor", "patch"]
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
