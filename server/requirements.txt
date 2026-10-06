@@ -13,5 +13,5 @@ Pillow>=10.4.0
 django-pghistory>=3.9.0
 django-pgtrigger>=4.17.0
 openpyxl>=3.1.5
-celery>=5.4.0
-redis>=5.0.8
+celery>=5.6.3
+redis>=8.1.0
