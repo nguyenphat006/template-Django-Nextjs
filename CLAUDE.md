@@ -39,7 +39,7 @@ docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
 
 API base: `/api/v1/`; Swagger: `/api/schema/swagger-ui/`.
 
-CI (`.github/workflows/ci.yml`) chạy lại toàn bộ health check trên mọi push/PR: backend (check, migration, test, schema OpenAPI) và frontend (types OpenAPI, khóa chữ vi/en, tsc, ESLint `--max-warnings=0`, Vitest, build). Dependabot (`.github/dependabot.yml`) mở PR cập nhật hằng tuần — chỉ merge khi CI xanh.
+CI (`.github/workflows/ci.yml`) chạy lại toàn bộ health check trên mọi push/PR: backend (check, migration, test, schema OpenAPI) và frontend (types OpenAPI, khóa chữ vi/en, tsc, ESLint `--max-warnings=0`, Vitest, build). Dependabot (`.github/dependabot.yml`) mở 2 PR cập nhật mỗi đầu tháng (1 frontend, 1 backend; chỉ minor/patch) — chỉ merge khi CI xanh.
 
 ## Quy tắc bắt buộc
 

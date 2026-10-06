@@ -52,7 +52,7 @@ Template quản trị (admin) full-stack dùng làm nền cho mọi dự án qu�
 | **Giao diện** | Sáng / tối / theo hệ thống, sidebar thu gọn + ngăn kéo trên điện thoại, trang 404 / lỗi / loading |
 | **Nền tảng API** | Response thống nhất `{success, message, data, errors, code}`, `BaseERPViewSet` (CRUD + batch + export), factory service/hook, kiểu TypeScript sinh từ OpenAPI |
 | **Công cụ** | `startmodule` + `gen:module` sinh phân hệ CRUD hoàn chỉnh; `bootstrap` khởi tạo hệ thống |
-| **Chất lượng** | Test Django, Vitest, Playwright; CI GitHub Actions; Dependabot |
+| **Chất lượng** | Test Django, Vitest, Playwright; CI GitHub Actions; Dependabot (2 PR mỗi đầu tháng: frontend + backend) |
 | **Vận hành** | Docker production (nginx + gunicorn + Next standalone), health check |
 
 ## 3. Công nghệ
