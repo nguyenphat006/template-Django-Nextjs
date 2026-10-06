@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Admin Template API Documentation
   version: 1.0.0
-  description: "API của template quản trị Django + Next.js (tác giả: ERICSS)"
+  description: 'API của template quản trị Django + Next.js (tác giả: ERICSS)'
 paths:
   /api/v1/attachments/:
     get:
