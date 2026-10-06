@@ -1,0 +1,126 @@
+# Dependabot — tự động mở PR cập nhật dependency + cảnh báo bảo mật.
+# Tài liệu: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# Nguyên tắc:
+# - Lịch hằng tuần (sáng thứ Hai, giờ VN), gom nhóm để tránh "bão PR".
+# - Bản vá bảo mật (security updates) KHÔNG bị giới hạn bởi lịch/nhóm này — bật trong
+#   GitHub > Settings > Code security > Dependabot security updates.
+# - Nâng MAJOR của framework lõi (Next, React, Ant Design, Django, PostgreSQL) cần migration
+#   có kế hoạch -> bỏ qua ở đây, nâng thủ công theo checklist.
+# - Mọi PR phải qua health check (xem CLAUDE.md) trước khi merge.
+
+version: 2
+
+updates:
+  # ---------------------------------------------------------------- Frontend (Next.js)
+  - package-ecosystem: "npm"
+    directory: "/client"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      nextjs-react:
+        patterns: ["next", "react", "react-dom", "eslint-config-next", "@types/react", "@types/react-dom"]
+        update-types: ["minor", "patch"]
+      ui-radix:
+        patterns: ["radix-ui", "@radix-ui/*", "lucide-react", "cmdk", "sonner", "react-day-picker", "tailwindcss", "@tailwindcss/*", "tailwind-merge", "tw-animate-css", "class-variance-authority"]
+        update-types: ["minor", "patch"]
+      tanstack-query:
+        patterns: ["@tanstack/*"]
+        update-types: ["minor", "patch"]
+      dnd-kit:
+        patterns: ["@dnd-kit/*"]
+      dev-tooling:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+      runtime-minor-patch:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      # Giữ @types/node theo major của Node.js đang dùng
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+  # ---------------------------------------------------------------- Backend (Django)
+  - package-ecosystem: "pip"
+    directory: "/server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      django-stack:
+        patterns: ["Django", "djangorestframework*", "drf-spectacular", "django-*", "dj-database-url"]
+        update-types: ["minor", "patch"]
+      celery-redis:
+        patterns: ["celery", "redis"]
+      python-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "Django"
+        update-types: ["version-update:semver-major"]
+
+  # ---------------------------------------------------------------- Docker image của backend
+  - package-ecosystem: "docker"
+    directory: "/server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    commit-message:
+      prefix: "chore(docker)"
+    ignore:
+      # python:3.12 -> 3.13 là nâng phiên bản ngôn ngữ, làm thủ công
+      - dependency-name: "python"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+
+  # ---------------------------------------------------------------- docker-compose (postgres, redis)
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    commit-message:
+      prefix: "chore(docker)"
+    ignore:
+      # Nâng major PostgreSQL cần dump/restore dữ liệu -> làm thủ công
+      - dependency-name: "postgres"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "redis"
+        update-types: ["version-update:semver-major"]
+
+  # ---------------------------------------------------------------- GitHub Actions (khi có CI)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      timezone: "Asia/Ho_Chi_Minh"
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      actions:
+        patterns: ["*"]
